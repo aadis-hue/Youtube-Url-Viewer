@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plyr YouTube Embed with URL Input</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      background: #f9f9f9;
+    }
+    .container {
+      max-width: unset;
+      margin: auto;
+    }
+    .video-wrapper {
+      aspect-ratio: 16 / 8.5;
+      position: relative;
+      margin-bottom: 1em;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .input-group {
+      display: flex;
+      gap: 0.5em;
+      flex-wrap: wrap;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 0.5em;
+      font-size: 1em;
+      min-width: 250px;
+    }
+    button {
+      padding: 0.5em 1em;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="video-wrapper" id="playerContainer">
+      <iframe
+        id="videoFrame"
+        src="https://www.youtube.com/embed/bTqVqk7FSmY?origin=https://plyr.io&iv_load_policy=3&modestbranding=1&playsinline=1&showinfo=0&rel=0&enablejsapi=1"
+        allow="autoplay"
+        allowtransparency
+      ></iframe>
+    </div>
+
+    <div class="input-group">
+      <input
+        type="text"
+        id="videoUrlInput"
+        placeholder="Paste YouTube URL here"
+      />
+      <button onclick="updateVideo()">Load Video</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script>
+    let player = new Plyr('#videoFrame', {
+      fullscreen: { enabled: false }
+    });
+
+    function updateVideo() {
+      const input = document.getElementById("videoUrlInput").value;
+      const videoId = extractYouTubeID(input);
+      if (videoId) {
+        const container = document.getElementById("playerContainer");
+
+        container.innerHTML = `
+          <iframe
+            id="videoFrame"
+            src="https://www.youtube.com/embed/${videoId}?origin=https://plyr.io&iv_load_policy=3&modestbranding=1&playsinline=1&showinfo=0&rel=0&enablejsapi=1"
+            allow="autoplay"
+            allowtransparency
+          ></iframe>
+        `;
+
+        player = new Plyr('#videoFrame', {
+          fullscreen: { enabled: false }
+        });
+      } else {
+        alert("Please enter a valid YouTube URL.");
+      }
+    }
+
+    function extractYouTubeID(url) {
+      const regex =
+        /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : null;
+    }
+  </script>
+</body>
+</html>
