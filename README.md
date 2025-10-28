@@ -1,4 +1,5 @@
 # Youtube-Url-Viewer
+YOU SEEING THIS, is probaly a student. If so, I was once like you and craved youtube. This was my solution.
 
 A tiny, simple widget that lets you paste a YouTube video URL and watch the video inline. Designed to be dropped into any HTML area (or embedded into Google Sites) so you can preview videos quickly without navigating away.
 
